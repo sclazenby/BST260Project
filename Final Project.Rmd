@@ -299,11 +299,18 @@ View(Cases_Full_Data_data)
 
 ```
 
-The Global Data will be totally seperate since we are not going to visualize with any other SES viarables, etc. Load in the Global 5050 data here.
+The Global Data will be totally seperate since we are not going to visualize with any other SES viarables, etc. Load in the Global 5050 data here. This is pretty clean, we can add additional variables if we like but I just selected these view as the most important. 
 
 ```{r}
 
+library(readr)
 
+
+global5050 <- read_csv("global5050.csv") %>% select (Country, case_date= "Cases date", male_cases = "Cases (% male)",
+                                                    female_cases = "Cases (% female)", 
+                                                    deaths_mfratio = "Proportion of deaths in confirmed cases (Male:female ratio)")
+                                                    
+View(global5050)
 
 
 
