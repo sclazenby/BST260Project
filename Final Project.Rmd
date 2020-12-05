@@ -280,7 +280,32 @@ pop$State[grepl(".Wyoming", pop$State)] <-"Wyoming"
 
 pop$State
 ```
+Need to merge the datasets with all the SES varibles. We still need to fix the cases for the US data, the format is weird so I suggest re-dowloading but not sure who uploaded it.
+
+```{r}
+
+ses <- left_join(pop, insur, by = "State")
+
+ses2 <- left_join(ses, medinc, by ="State")
+
+#Final SES data frame
+
+ses3 <- left_join (ses2, insur, by = "State")
+
+library(readr)
+Cases_Full_Data_data <- read_csv("Cases_Full_Data_data.csv")
+View(Cases_Full_Data_data)
+
+```
+
+The Global Data will be totally seperate since we are not going to visualize with any other SES viarables, etc. Load in the Global 5050 data here.
+
+```{r}
 
 
+
+
+
+```
 
 
