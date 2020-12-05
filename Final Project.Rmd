@@ -292,7 +292,8 @@ ses2 <- left_join(ses, medinc, by ="State")
 
 ses3 <- left_join (ses2, insur, by = "State")
 
-library(readr)
+
+#This cases is really messy--who downloaded this? I think there's something wrong with the formatting
 Cases_Full_Data_data <- read_csv("Cases_Full_Data_data.csv")
 View(Cases_Full_Data_data)
 
@@ -301,6 +302,7 @@ View(Cases_Full_Data_data)
 The Global Data will be totally seperate since we are not going to visualize with any other SES viarables, etc. Load in the Global 5050 data here.
 
 ```{r}
+
 
 
 
