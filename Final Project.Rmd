@@ -292,10 +292,35 @@ ses2 <- left_join(ses, medinc, by ="State")
 
 ses3 <- left_join (ses2, insur, by = "State")
 
+#trim whitespace in state names
+ses3$State = str_trim(ses3$State, side=c("both", "left", "right"))
 
-#This cases is really messy--who downloaded this? I think there's something wrong with the formatting
-Cases_Full_Data_data <- read_csv("Cases_Full_Data_data.csv")
-View(Cases_Full_Data_data)
+head(ses3)
+
+
+
+###Create cases and deaths sex-disaggregated dataframe
+library(readxl)
+coviddisagg <- read_xlsx("US Sex-Disaggregated Data_TimeSeries.xlsx")
+
+#Reformat Date column of sex-disaggregated cases & deaths into dates
+library(lubridate)
+coviddisagg$Date = ymd(coviddisagg$Date)
+
+#Remove unnecessary columns
+coviddisagg <- coviddisagg %>% select(!contains("...")) 
+
+#Remove whitespaces in state names
+coviddisagg$State = str_trim(coviddisagg$State, side=c("both", "left", "right"))
+
+#Removing NA rows
+coviddisagg = coviddisagg %>% filter(!is.na(State))
+head(coviddisagg)
+
+
+#Join SES & COVID sex-disaggregated data
+covidsex <- left_join(coviddisagg, ses3, by="State")
+view(covidsex)
 
 ```
 
