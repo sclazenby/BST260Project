@@ -20,6 +20,9 @@ library(tidyverse)
 library(rvest)
 library(dplyr)
 library(ggplot2)
+install.packages("purrr")
+library(maps)
+library(RColorBrewer)
 
 # Upload the Census data on median income and filter to only include State names and their median income in 2018.Rename.
 medinc <- read.csv("median_income.csv")
@@ -280,24 +283,21 @@ pop$State[grepl(".Wyoming", pop$State)] <-"Wyoming"
 
 pop$State
 ```
-Need to merge the datasets with all the SES varibles. We still need to fix the cases for the US data, the format is weird so I suggest re-dowloading but not sure who uploaded it.
+# Need to merge the datasets with all the SES varibles. We still need to fix the cases for the US data, the format is weird so I suggest re-dowloading but not sure who uploaded it.
 
 ```{r}
-
 ses <- left_join(pop, insur, by = "State")
 
 ses2 <- left_join(ses, medinc, by ="State")
 
-#Final SES data frame
+#Final SES data frame. Second dataframe corrected to "pov". "insur" was merged a second time here. 
 
-ses3 <- left_join (ses2, insur, by = "State")
+ses3 <- left_join (ses2, pov, by = "State")
 
 #trim whitespace in state names
 ses3$State = str_trim(ses3$State, side=c("both", "left", "right"))
 
 head(ses3)
-
-
 
 ###Create cases and deaths sex-disaggregated dataframe
 library(readxl)
@@ -315,11 +315,16 @@ coviddisagg$State = str_trim(coviddisagg$State, side=c("both", "left", "right"))
 
 #Removing NA rows
 coviddisagg = coviddisagg %>% filter(!is.na(State))
-head(coviddisagg)
 
+#Join SES & COVID sex-disaggregated data.
+# Michelle: I want to drop the "Source" column in the final dataset, and I want it to be arranged by country and date with the covariates matching. 
+covidsex <- left_join(coviddisagg, ses3, by="State") %>%
+  mutate(case_ratio = Male_cc/Female_cc) %>%
+  mutate(death_ratio = Male_d/Female_d)
 
-#Join SES & COVID sex-disaggregated data
-covidsex <- left_join(coviddisagg, ses3, by="State")
+# Rename "US Virgin Islands" to "US Virgin Island"
+str(covidsex$State)
+covidsex$State[grepl("US Virgin Islands", covidsex$State)] <- "US Virgin Island"
 view(covidsex)
 
 ```
@@ -327,9 +332,7 @@ view(covidsex)
 The Global Data will be totally seperate since we are not going to visualize with any other SES viarables, etc. Load in the Global 5050 data here. This is pretty clean, we can add additional variables if we like but I just selected these view as the most important. 
 
 ```{r}
-
 library(readr)
-
 
 global5050 <- read_csv("global5050.csv") %>% select (Country, case_date= "Cases date", male_cases = "Cases (% male)",
                                                     female_cases = "Cases (% female)", 
@@ -337,9 +340,139 @@ global5050 <- read_csv("global5050.csv") %>% select (Country, case_date= "Cases 
                                                     
 View(global5050)
 
+```
+
+# US Static figures: Heat map, scatter, line 
+```{r}
+# Idk how to get rid of all that gray.
+covidsex %>% filter(!is.na(case_ratio)) %>%
+  ggplot(aes(x = Date, y = State)) +
+  geom_tile(aes(fill = case_ratio)) +
+  scale_fill_gradient(low = "white", high = "blue") +
+  #scale_x_continuous(expand = c(0,0)) +
+  scale_x_date() +
+  xlab("Date") +
+  ylab("State") +
+  theme(legend.title = element_text(size = 12, hjust = 0.5), legend.text = element_text(size = 7)) +
+  ggtitle("Ratio of male to female COVID cases in US") +
+  theme(plot.title = element_text(size=12, hjust = 0.5, vjust = 2))
 
 
 
 ```
+# US visualization for Shiny app. 
+Next step: add in the covariates.
+
+```{r}
+library(ggthemes)
+#Scatterplot of ratio for confirmed cases.
+covidsex %>% filter(!is.na(case_ratio)) %>%
+  group_by(Date) %>%
+  ggplot(aes(x=Date, y=case_ratio)) +
+  geom_point() +
+  scale_y_continuous(limits = c(0.5, 2.0)) +
+  theme_bw() +
+  xlab("Date") +
+  ylab("Ratio Male:Female") +
+  ggtitle("Ratio of male to female COVID cases in US") +
+  theme(plot.title = element_text(size=12, hjust = 0.5, vjust = 2))
+
+# View all as one. 
+covidsex %>% filter(!is.na(case_ratio)) %>%
+  group_by(Date) %>%
+  ggplot(aes(x = Date, y = case_ratio, color = State)) +
+  geom_line(alpha = 0.5) +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b") +
+  scale_y_continuous(limits = c(0.5, 2.0)) +
+  xlab("Date") +
+  ylab("Ratio Male:Female") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  scale_color_discrete(name = "State") +
+  ggtitle("Ratio of male to female COVID cases in US") +
+  theme(plot.title = element_text(size=12, hjust = 0.5, vjust = 2))
+
+#Sample visualization with a few states for comparison. Similar to what we had to do for the midterm where we can choose up to 5 states to compare.
+covidsex %>% filter(!is.na(case_ratio), State %in% c("South Dakota", "US Virgin Islands", "US Virgin Island", "Texas", "Califoria")) %>%
+  group_by(Date) %>%
+  ggplot(aes(x = Date, y = case_ratio, color = State)) +
+  geom_line(alpha = 0.5) +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b") +
+  scale_y_continuous(limits = c(0.5, 2.0)) +
+  xlab("Date") +
+  ylab("Ratio Male:Female") +
+  theme_bw() +
+  theme(legend.position = "right") +
+  scale_color_discrete(name = "State") +
+  ggtitle("Ratio of male to female COVID cases in US") +
+  theme(plot.title = element_text(size=12, hjust = 0.5, vjust = 2))
 
 
+```
+
+# US Map for Shiny. 
+```{r}
+us_states <- map_data("state") %>%
+    rename("State" = "region")
+
+View(us_states)
+
+str_to_lower(covidsex$State)
+
+#trim whitespace in state names
+ses3$State = str_trim(ses3$State, side=c("both", "left", "right"))
+
+USsexd <- right_join(us_states, covidsex , by = "State") %>%
+   select("State", "group", "order","lat", "long", "case_ratio", "death_ratio", "2018 Pop", "2019 Pop", "Medicaid Expand", "2018 Uninsured", "2019 Uninsured", "Median Income", "Percent Pov") 
+head(USsexd)
+
+view(covidsex)
+
+colnames(us_states)
+colnames(covidsex)
+
+head(covidsex)
+
+USsexd %>% filter(!is.na("case_ratio")) %>%
+  ggplot(aes(x = long, y = lat, fill = State, group = group)) + 
+  ggplot(aes(x = long, y = lat, fill = "case_ratio", group = group)) + 
+  geom_polygon(aes_string(x = long, y = lat, fill = case_ratio, color = white)) + 
+  theme(panel.grid.major = element_blank(), 
+                      panel.background = element_blank(),
+                      axis.title = element_blank(), 
+                      axis.text = element_blank(),
+                      axis.ticks = element_blank()) +
+  coord_fixed(1.3) +
+  guides(fill = FALSE)
+
+
+```
+
+# Global map for Shiny. 
+
+```{r}
+world_map = map_data("world")
+map <- world_map %>%
+  rename("Country" = "region")
+
+globalsexd <- right_join(map, global5050 , by = "Country") %>%
+   select("Country", "group", "order","lat", "long", "case_date", "male_cases", "female_cases", "deaths_mfratio") 
+
+view(globalsexd)
+
+globalsexd %>% filter(!is.na(deaths_mfratio), Country != "Antarctica") %>%
+  ggplot() + 
+  geom_polygon(data=map, aes(x = long, y=lat, group = group), fill = "light grey") +
+  geom_polygon(data=globalsexd, aes(x = long, y = lat, group = group, fill = `deaths_mfratio`)) +
+#  scale_fill_continuous() +
+  scale_color_brewer("Diamond\nclarity") +
+  theme(panel.grid.major = element_blank(), 
+                      panel.background = element_blank(),
+                      axis.title = element_blank(), 
+                      axis.text = element_blank(),
+                      axis.ticks = element_blank()) +
+                coord_fixed(1.75) +
+    labs(x= "Longitude", y = "Latitude", title = "Global Ratio of male to female COVID deaths")
+
+# How can we make it so that the 
+```
