@@ -1,0 +1,55 @@
+---
+title: "Static Global"
+date: December 7, 2020
+output: github_document
+---
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(rvest)
+library(lubridate)
+library(knitr)
+library(zoo)
+library(maps)
+```
+
+##Overview, Motivation, and Related Work
+
+While the COVID-19 pandemic marches on, there continues to be a dearth of evidence that illustrates **how SARS-CoV-2 impacts men and women differently, and why these trends might vary over space.** When data first emerged from China, the virus was dubbed “a man killer,” for men were 2.4 times as likely to die from the virus. A similar trend was then observed in Italy, where a disproportionate amount of men were dying from the virus (men were representing over 70% of the deaths). Initial hypotheses for the observed health outcomes ran the gamut from differences in smoking and health-seeking behaviors to immunological differences and variances in ACE 2 receptors for the coronavirus. 
+
+As COVID-19 continued to spread, researchers and journalists began to investigate other gendered impacts of the pandemic. After studying the rise in domestic abuse, caregiving and homeschooling responsibilities, and exposure to the virus through over-representation in ‘essential work,’ many have determined that the virus was indeed exacerbating inequities and a “disaster for feminism.” The problem, at that time, was that the paucity of sex-disaggregated data made this difficult to prove and nearly impossible to act on.
+
+The good news, according to Global Health 5050, is that in recent months, more and more countries (now 79) have begun to report sex-disaggregated case and mortality data -- acknowledging that this is integral to understanding the virus and informing a strong COVID-19 response. While the prevailing hypothesis today is that more men die from COVID-19 even if and when more women are exposed, this trend is not ubiquitous (in Vietnam, for example, just 37% of the deaths are male, compared to Bangladesh where this number is 77%). **This project seeks to illustrate the observed differences, and explore potential factors that could explain what we are witnessing in the US and globally.**
+
+This project was inspired by the [Global Health 5050](https://globalhealth5050.org/) , as well as the work out of [Harvard’s GenderSci Lab](https://www.genderscilab.org/gender-and-sex-in-covid19). 
+
+*Note: sex-disaggregated data does not report or account for gender identity, therefore data are absent on the impact of COVID-19 on transgender and non-binary people. Some efforts are underway to redress this gap, but for the scope of this project we will use and sex and gender interchangeably.* 
+
+
+```{r}
+global_data = read_csv("global5050.csv")
+
+
+```
+
+## GitHub Documents
+
+This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
+
+## Including Code
+
+You can include R code in the document as follows:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
