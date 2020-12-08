@@ -462,6 +462,7 @@ USsexd %>% filter(!is.na("case_ratio")) %>%
 # Global map for Shiny. 
 
 ```{r}
+install.packages(maps)
 world_map = map_data("world")
 map <- world_map %>%
   rename("Country" = "region")
