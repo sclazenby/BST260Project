@@ -410,7 +410,18 @@ covidsex %>% filter(!is.na(case_ratio), State %in% c("South Dakota", "US Virgin 
 
 ```
 
+# Designs with covariates.
+
+```{r}
+# LOL how do I add those. 
+
+
+
+
+```
 # US Map for Shiny. 
+# Struggle busing. Review lab 4 solution or video. 
+
 ```{r}
 us_states <- map_data("state") %>%
     rename("State" = "region")
@@ -475,4 +486,21 @@ globalsexd %>% filter(!is.na(deaths_mfratio), Country != "Antarctica") %>%
     labs(x= "Longitude", y = "Latitude", title = "Global Ratio of male to female COVID deaths")
 
 # How can we make it so that the 
+
+
+covidsex$Date
 ```
+
+# Logistic regression. 
+
+```{r}
+# Time-varying nature of the data. Let's look over the summer months from May to August by creating a subset. The summer months were in between two waves of COVID-19 in the US. 
+covidsex_may14_aug03 <- covidsex %>%
+  filter(Date >= "2020-04-13") %>%
+  filter(Date <= "2020-08-03")
+
+head(covidsex_may04_aug03)
+
+
+```
+
