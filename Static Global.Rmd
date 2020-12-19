@@ -11,6 +11,11 @@ library(lubridate)
 library(knitr)
 library(zoo)
 library(maps)
+library(ggplot2)
+library(stringr)
+library(dplyr)
+library(ggrepel)
+library(ggthemes)
 ```
 
 ##Overview, Motivation, and Related Work
@@ -27,21 +32,69 @@ This project was inspired by the [Global Health 5050](https://globalhealth5050.o
 
 
 ```{r}
-global_data = read_csv("global5050.csv")
+global_data = read_csv("global5050_clean.csv")
+countries = read_csv("Country_Region_data.csv")
+
+#Scatterplot for Global Case Data
+
+global_cases <- select(global_data, "Country code", "Country", "Cases (% male)", "Cases (% female)") %>%
+  drop_na() %>%
+  rename(male = 'Cases (% male)') %>%
+  rename(female = 'Cases (% female)') %>%
+  rename(code = 'Country code')
+
+
+global_cases <- left_join(global_cases, countries)
+
+c <- global_cases %>% 
+  ggplot(aes(male, female, label = code)) +
+  geom_text_repel() +
+  xlab("Cases % Male") +
+  ylab("Cases % Female") +
+  ggtitle("Global COVID-19 Case Data Disaggregated by Sex") + 
+  theme_economist()
+
+c + geom_point(aes(color = Region), size = 3)
 
 
 ```
 
-## GitHub Documents
+```{r}
 
-This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
+#Scatterplot for Global Death Data - BROKEN 
 
-## Including Code
+global_deaths <- select(global_data, "Country code", "Country", "Deaths (% male)", "Deaths (% female)") %>%
+  drop_na() %>%
+  rename(male = 'Deaths (% male)') %>%
+  rename(female = 'Deaths (% female)') %>%
+  rename(code = 'Country code')
 
-You can include R code in the document as follows:
 
-```{r cars}
-summary(cars)
+global_deaths <- left_join(global_deaths, countries)
+
+d <- global_deaths %>% 
+  ggplot(aes(male, female, label = code)) +
+  geom_text_repel() +
+  xlab("Deaths % Male") +
+  ylab("Deaths % Female") +
+  ggtitle("Global COVID-19 Death Data Disaggregated by Sex") + 
+  theme_economist()
+
+d + geom_point(aes(color = Region), size = 3)
+
+
+```
+
+```{r}
+
+#Stacked Bar Chart for Global Cases 
+
+b <- ggplot(global_cases, aes(x = code))
+
+
+scale_y_continuous(labels = scales::percent_format())
+ 
+
 ```
 
 ## Including Plots
