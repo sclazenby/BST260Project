@@ -202,7 +202,8 @@ dat_death_long %>%
   coord_flip() +
   theme(axis.text.y = element_text(size = 8)) +
   ylab("Deaths where Sex-Disaggregated Data Available") +
-  ggtitle("Global COVID-19 Deaths Where Sex-Disagregated Data Available") 
+  ggtitle("Global COVID-19 Deaths Where Sex-Disagregated Data Available") +
+  xlab("Countries")
 
 ```
 
@@ -219,7 +220,8 @@ dat_death_long %>%
   coord_flip() +
   theme(axis.text.y = element_text(size = 8)) + 
   ylab("Deaths where Sex-Disaggregated Data Available by %") +
-  ggtitle("Global COVID-19 Deaths Where Sex-Disagregated Data Available by %") 
+  ggtitle("Global COVID-19 Deaths Where Sex-Disagregated Data Available by %") +
+  xlab("Countries")
 
 ```
 
