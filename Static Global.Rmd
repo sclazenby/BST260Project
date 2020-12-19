@@ -163,4 +163,4 @@ sum(global_data$reporting == "No")
 sum(global_data$reporting == "Partial")
 
 ```
-According to Global Health 5050, as of December, there are 85 countries reporting complete sex-disaggregated COVID-19 data, 48 countries reporting partial data and 53 countries reporting no sex-disaggregated COVID-19 data. 
+According to Global Health 5050, as of December, there are 85 countries reporting complete sex-disaggregated COVID-19 data, 48 countries reporting partial data and 53 countries reporting no sex-disaggregated COVID-19 data.
