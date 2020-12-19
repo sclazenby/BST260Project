@@ -1,0 +1,432 @@
+---
+title: "Kaela_Regression"
+author: "Kaela"
+date: "12/12/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+install.packages("gridExtra")
+
+library(ggplot2)
+library(dplyr)
+library(zoo)
+library(gridExtra)
+```
+
+## R Markdown
+
+First, we are going to load in the data and look at summary measures of COVID-19 sex-disaggregated case and death data. The data begins April 13th 2020 and ends November 30th 2020. For are going to treat this whole time as one period, so we'd like to group by state and collapse all dates for both cases and deaths.
+
+```{r}
+
+covid_us <- read.csv("mergeses_covid.csv")
+
+#covid_us <- covid_us[-c(3)]
+
+
+covid <- covid_us %>%
+  filter(!is.na(case_ratio)) %>%
+  filter(!is.na(death_ratio)) %>%
+  group_by(State) %>%
+  arrange(Date) %>%
+  mutate(case_ratio_agg = mean(case_ratio), na.rm = T) %>%
+  mutate(death_ratio_agg = mean(death_ratio), na.rm = T)
+
+summary(covid$death_ratio_agg)
+
+summary(covid$case_ratio_agg)
+
+```
+
+Since sex ratios are male to female, we see that the COVID case sex ratio has a minimum of 0.746 meaning the state would have less males with COVID cases than females. The max COVID case sex ratio is 1.51 which means that more males have COVID cases than females (1.51 times more males have COVID cases than females). The mean is 0.9371 and the median is 0.9282, which indicates that the distribution of COVID sex ratio cases is relatively normally  distributed. The fact it's over 1 may mean that women disppportionately have COVID-19 cases than men.
+
+Looking at the COVID death sex ratio, it presents a different story. We see the distribution of death sex ratios lean towards values above 1. The minimum sex ratio is higher than that of cases, and has a value of 0.852. This crude measure may imply that men die from COVID-19 at a higher rate than women. The median is 1.15 and the mean is 1.16, which is less symmetrically distributed than the case data and might be slightly skewed to the right.  
+
+```{r}
+
+cumulative_caseratio <-covid %>%
+  ggplot() +
+  geom_point (aes(x = State, y = case_ratio_agg)) +
+  ylab("COVID Case Sex Ratio (M:F)") +
+  xlab("State") +
+  ggtitle ("COVID Case Sex Ratio from 13 April to 30 November 2020") +
+  theme (axis.text.x= element_text (angle = 90)) 
+
+cumulative_deathratio <- covid %>%
+  ggplot() +
+  geom_point (aes(x = State, y = death_ratio_agg)) +
+  ylab("COVID Death Sex Ratio (M:F)") +
+  xlab("State") +
+  ggtitle ("COVID Death Sex Ratio from 13 April to 30 November 2020") +
+  theme (axis.text.x= element_text (angle = 90)) 
+
+grid.arrange(cumulative_caseratio, cumulative_deathratio, nrow = 1 )
+
+#Add a facet wrap
+
+# dups <- covid %>%
+#   select(State, Date) %>%
+#   duplicated()
+# covid[dups, ]
+
+```
+
+By looking at the simple plots above, for the cumulative COVID case sex ratio we see most of the data points converging below 1. Texas is clearly an outlier with a very high sex ratio, whereas Mississippi and Alabama are also outlierr but with a very low sex ratio. 
+
+For COVID death sex ratio, more points lie above 1. Hawaii is an outlier with a very low sex ratio, and Kentucky is also an outlier with a high sex ratio.
+
+Now, going to merge state sex ratios to compare them to cumulative COVID sex ratios by state.
+```{r}
+
+library(stringr)
+library (purrr)
+library(readxl)
+
+us_sr <- read.csv("US_sex_ratio.csv", header = T, check.names = F, sep = ",", skip = 3, stringsAsFactors=F) %>%
+  setNames(c("State", "Male","Female", "total", "foot"))
+
+us_sr <- us_sr[-c(5)]
+
+us_sr <- us_sr[-c(53:60),]
+
+us_sr <- us_sr %>%
+  group_by (State) %>%
+  mutate(sex_ratio = Male/Female)
+
+summary(us_sr$sex_ratio)
+
+us_sr %>%
+  ggplot() +
+  geom_point (aes(x = State, y = sex_ratio)) +
+  ylab("Sex Ratio (M:F)") +
+  xlab("State") +
+  ggtitle ("Sex Ratio by State 2019") +
+  theme (axis.text.x= element_text (angle = 90)) 
+
+
+us_covid_sr <- left_join(covid, us_sr, by = "State")
+
+```
+
+Now, looking at the sex ratio in general for the United States across all states. It ranges between 0.90 and 1.04 with its mean and median pretty close to 1. However, as the IQR is below 1, it appears that the distribution of the population tends to have more males than females. 
+
+In the plot, through visual inspection, we see most values centered around 0.95 which is the median sex ratio. Wyoming and Alabama have an extreme sex ratio with lots of males, and on the other hand, Puerto Rico and District of Columbia have a lower extreme sex ratio with a higher proportion of females than males.
+
+```{r}
+
+#Reorganizing the data
+
+# Notes for Kaela
+# Eight views of the data: cases or deaths, by
+# Cumulative, national
+# Cumulative, by state
+# Daily, national
+# Daily, by state.
+
+#Want to create daily deaths variable so will look at Male_cc and Female_cc variables 
+
+library(zoo)
+library(lubridate)
+
+us_covid_sr$Date<-ymd(us_covid_sr$Date)
+
+us_covid_2 <- us_covid_sr %>%
+  group_by(State) %>%
+  arrange (Date) %>%
+  mutate(new_cases_m = Male_cc - lag(Male_cc)) %>%
+  mutate (new_cases_f= Female_cc - lag(Female_cc)) %>%
+  #Creating the 7 day average just in case
+  mutate (new_cases_7avg_male = rollmean(new_cases_m, k=7, fill=NA), na.rm = T) %>%
+  mutate (new_cases_7avg_female = rollmean (new_cases_f, k=7, fill=NA), na.rm = T)
+
+us_covid_complete <- us_covid_2 %>%
+  group_by(State) %>%
+  arrange (Date) %>%
+  mutate(new_deaths_m = Male_d - lag(Male_d)) %>%
+  mutate (new_deaths_f= Female_d - lag(Female_d)) %>%
+  #Creating the 7 day average just in case
+  mutate (new_deaths_7avg_male = rollmean(new_deaths_m, k=7, fill=NA), na.rm = T) %>%
+  mutate (new_deaths_7avg_female = rollmean (new_deaths_f, k=7, fill=NA), na.rm = T)
+
+# us_covid_complete %>%
+#     group_by(State) %>%
+#     summarize(timepoints = n()) 
+#Not every state has equal time points
+
+
+```
+
+Not every state has equal time points which will affect our graphs, unfortunately. This is a limitation of this exploratory analysis. 
+
+```{r}
+#Calculating the proportion of cases which are male and going to do a 1 sample z-test
+
+us_male_cases <- us_covid_sr %>%
+  group_by(State) %>%
+  summarize(prp_cases_m = mean(Male_cc / Total_cc), .groups = "drop")
+
+mean(us_male_cases$prp_cases_m)
+
+mean(us_covid_sr$Male_per_cc, na.rm =T)
+
+#The mean is 0.4758709 so this will be used for out 1 sample z test for cases
+
+test_cases <- prop.test(x = 0.4758709 , n = 47, p = 0.5,
+                  correct = FALSE)
+test_cases
+
+#Mean of male deaths as % of total deaths
+
+us_covid_sr$Total_D <- as.numeric(us_covid_sr$Total_D)
+
+us_male_deaths <- us_covid_sr %>%
+  group_by(State) %>%
+  summarize(prp_deaths_m = mean(Male_d / Total_D), .groups = "drop")
+
+mean(us_male_deaths$prp_deaths_m, na.rm = T)
+
+
+#the mean is 0.5305624
+
+test_deaths <- prop.test(x = 0.5305624 , n = 47, p = 0.5,
+                  correct = FALSE)
+test_deaths
+
+```
+
+We take the mean cumulative sex ratio for both cases and deaths and perform a one sample Z-test. We do this by dividing the number of male cases and the number of male deaths as a fraction of total cases and total deaths, respectively, to find a proportion. For this calculation, I collapsed days and found a summary proportion by state for the time period we are looking at. In the case of the one sample Z-test for cases, we would expect that males would constitue roughly half total cases (0.5) so that is our null hypothesis.
+
+Both tests were statistically significant. In testing whether the proportion of men with COVID out of total COVID cases deviates from the null, our results suggest that the ratio of COVID cases between men and women is not 1:1. These results were statistically significant ( p-value < 0.001). We found similar results when testing the proportion of deaths among males compared to the total. These results were also statistically significant  ( p-value < 0.001). We will need to investigate a little more to see why this ratio is not 1:1 as we would expect.
+
+
+```{r}
+
+us_covid_complete %>%
+  ggplot() + 
+  geom_line (aes(x = Date, y = new_cases_m, color = State))
+
+us_covid_complete %>%
+  ggplot() + 
+  geom_line (aes(x = Date, y = new_deaths_m, color = State))
+
+#There are negative values as we can see from the graph so we will have to impute something slightly larger than zero (since dividing by zero to get the sex ratio will create problems)
+
+us_covid_complete <- us_covid_complete %>%
+  group_by (State, Date) %>%
+  arrange(Date) %>%
+  mutate (new_cases_sex = new_cases_m / new_cases_f)
+
+#Have us_covid_complete  0.01 for values under zero or equal to zero so it doesnt error when dividing by a zero
+
+#us_covid_complete$new_deaths_f <- ifelse(us_covid_complete$new_deaths_f==0, 0.1, us_covid_complete$new_deaths_f )
+#us_covid_complete$new_deaths_7avg_female <- ifelse(us_covid_complete$new_deaths_7avg_female==0, 0.1, us_covid_complete$new_deaths_7avg_female )
+us_covid_complete$new_deaths_7avg_female <- ifelse(us_covid_complete$new_deaths_7avg_female <= 0, 0.1, us_covid_complete$new_deaths_7avg_female )
+us_covid_complete$new_deaths_7avg_male <- ifelse(us_covid_complete$new_deaths_7avg_male <= 0, 0.1, us_covid_complete$new_deaths_7avg_male )
+
+#Creating binary indicator for medicaid expansion
+
+us_covid_complete$medicaid <- ifelse(us_covid_complete$Medicaid.Expand =="^Y", "Yes", us_covid_complete$Medicaid.Expand)
+us_covid_complete$medicaid <- ifelse(us_covid_complete$Medicaid.Expand =="+Y", "Yes", us_covid_complete$medicaid )
+us_covid_complete$medicaid <- ifelse(us_covid_complete$Medicaid.Expand =="~Y", "Yes", us_covid_complete$medicaid)
+us_covid_complete$medicaid <- ifelse(us_covid_complete$Medicaid.Expand =="Y", "Yes", us_covid_complete$medicaid )
+us_covid_complete$medicaid <- ifelse(us_covid_complete$Medicaid.Expand =="#Y", "Yes", us_covid_complete$medicaid )
+
+#Creating the sex ratio 
+us_covid_complete <- us_covid_complete %>%
+  group_by (State, Date) %>%
+  arrange(Date) %>%
+  mutate (new_deaths_sex = new_deaths_m / new_deaths_f) %>%
+  mutate (new_cases_7avg_sex = (new_cases_7avg_male / new_cases_7avg_female)*100) %>%
+  mutate (new_deaths_7avg_sex = new_deaths_7avg_male / new_deaths_7avg_female)
+
+summary(us_covid_complete$new_cases_7avg_sex)
+
+summary(us_covid_complete$new_deaths_7avg_sex)
+#Looking to see visually if there are GENERAL different patterns between male and female
+
+
+female_plot<-us_covid_complete %>%
+  ggplot() + 
+  geom_line (aes(x = Date, y = new_cases_7avg_female, color = State), show.legend = FALSE)
+
+male_plot<- us_covid_complete %>%
+  ggplot() + 
+  geom_line (aes(x = Date, y = new_cases_7avg_male, color = State), show.legend = FALSE)
+
+grid.arrange(female_plot,male_plot, nrow=1)
+
+
+#Just to look at overall trends for COVID case sex ratio
+
+us_covid_complete %>%
+  ggplot() + 
+  geom_line (aes(x = Date, y = new_cases_7avg_sex, color = State), show.legend = FALSE) +
+  ylab("Sex ratio of COVID-19 cases \nrolling 7 day average (M:F) ") +
+  ggtitle("COVID-19 Sex Ratio of Cases by State")
+
+#These graphs show large differences between states in terms of new cases sex ratio
+
+
+#Choosing Random States to Display since showing all of them is not very informative
+#These states were chosen from my knowledge of states that experienced severe covid outbreaks at different time points
+
+#Cases
+
+cases <- us_covid_complete %>%
+ filter (State %in% c("Mississippi", "Kentucky", "Massachusetts","Wyoming", "Wisconsin", "Alaska", "California", "Alabama", "Texas", "New York")) %>%
+  ggplot() + 
+  geom_line (aes(x = Date, y = new_cases_7avg_sex, color = State))+
+  scale_x_date ( name = "Date", date_labels = "%b %Y", breaks = as.Date(c("2020-05-01",
+                                                                          "2020-06-01",
+                                                                          "2020-07-01",
+                                                                          "2020-08-01",
+                                                                          "2020-09-01",
+                                                                          "2020-10-01",
+                                                                          "2020-11-01"))) +
+  ylab("Sex ratio of COVID-19 cases \nrolling 7 day average (M:F) ") +
+  ggtitle("COVID-19 Sex Ratio of Cases by State") +
+  theme(plot.title = element_text (hjust = 0.5))
+
+
+
+#deaths
+deaths <- us_covid_complete %>%
+ filter (State %in% c("Mississippi", "Kentucky", "Massachusetts","Wyoming", "Wisconsin", "Alaska", "California", "Alabama", "Texas", "New York")) %>%
+  ggplot() + 
+  geom_line (aes(x = Date, y = new_deaths_7avg_sex, color = State))+
+  scale_x_date ( name = "Date", date_labels = "%b %Y", breaks = as.Date(c("2020-05-01",
+                                                                          "2020-06-01",
+                                                                          "2020-07-01",
+                                                                          "2020-08-01",
+                                                                          "2020-09-01",
+                                                                          "2020-10-01",
+                                                                          "2020-11-01"))) +
+  ylab("Sex ratio of COVID-19 deaths \nrolling 7 day average (M:F) ") +
+  ggtitle("COVID-19 Sex Ratio of Deaths by State") +
+  theme(plot.title = element_text (hjust = 0.5))
+
+grid.arrange(cases, deaths, nrow =2 )
+
+```
+
+Referring to the last two graphs of COVID case and death sex ratios over time for our selected states, the state with the highest COVID case sex ratio (especially from mid-August to September 2020), is Texas. This means that of the daily new cases, men comprised a disproportionate fraction of those cases compared to women; close to 8 times more than women. 
+
+Looking at the COVID death sex ratio, for that same time period we see that Alaska has the highest COVID death sex ratio where men comprised almost 12 times the deaths than women. 
+
+From these basic graphs, this leads us to think that the COVID case and death sex ratios do vary by state--but not for all states. We chose 10 states to focus on in these graphs, but from the graphs prior it looks like the trend is similar for all states. 
+
+```{r}
+
+#Now we are going to regress 
+
+us_covid_june_cutoff <- subset(us_covid_complete, Date > "2020-06-01" & Date < "2020-07-01")
+
+model_case <- lm(new_cases_7avg_sex ~ sex_ratio + X2019.Uninsured + medicaid + Percent.Pov , 
+               data = us_covid_june_cutoff)
+
+summary(model_case)
+
+model_death <- lm (new_deaths_7avg_sex ~ sex_ratio + X2019.Uninsured + medicaid + Percent.Pov , 
+               data = us_covid_june_cutoff)
+
+summary(model_death)
+
+
+model_case_agg <- lm(case_ratio_agg ~ sex_ratio + X2019.Uninsured + medicaid + Percent.Pov , 
+               data = us_covid_june_cutoff)
+summary(model_case_agg)
+
+model_death_agg <- lm(death_ratio_agg ~ sex_ratio + X2019.Uninsured + medicaid + Percent.Pov , 
+               data = us_covid_june_cutoff)
+
+summary(model_death_agg)
+
+
+```
+
+For our cross-sectional analysis, we looked at only dates in June 2020. Our main outcome was the COVID case sex ratio and COVID death sex ratio (M:F). Our main exposure variable was sex ratio for each state. These were calculated using the 7 rolling day average of new cases. The rolling 7 day average was used to circumvent missings. We adjusted for socioeconomic covariates and were going to include median income, but this was perfectly collinear with poverty and other covariates so it was ommitted in the final analysis. 
+
+Interestingly, in our fully-adjusted model, the sex ratio was negatively assicated with the COVID-19 case sex ratio at the 0.05 significance level (p-value = 0.0082). To interpret, when the sex ratio is 1:1 in a state this predicts a ...... *need help*
+
+When we ran the same model but with the COVID death sex ratio, the interpretation of the results were not altered. Although not statistically significant at the 0.05 level (p-value = 0.251), the model rendered a postive coefficient for the association between sex ratio and COVID death sex ratio. 
+
+This suggests that other factors besides the sex ratio in the state are contributing to the differences in COVID deaths between men and women. 
+
+*Using cumulative cases as the outcome*
+
+We additionally used cumulative COVID case and death sex ratio as the outcome. 
+
+For the association between sex ratio and cumulative COVID case sex ratio, the magnitude of the assocation was further from the null (null is that sex ratio = 1), however, was not statistically sigifnicant (p-value = 0.150)
+
+The same was true for using the cumulative COVID death sex ratio as the outcome. A sex ratio of 1:1 predicted cumulative COVID deaths where men constituted more than double the cumulative COVID deaths than women, after adjusting for socioeconomic factors for the month of June 2020 in the United States (p-value <0.001).
+
+In hypothesizing the difference in results between daily new COVID cases and deaths and the cumulative measure, we decided to do a sensitivity analysis where we look at another month. *Sensitivity analysis--do this still*
+
+```{r}
+
+#Plot fo COVID sex ratio of daily new cases by date for the entire US and seeing if it changes over time
+
+#Want to have summary measure of cumulative COVID case and death sex ratio for the whole US
+
+us_covid <- us_covid_complete %>%
+  group_by(Date) %>%
+  mutate(us_case_f = sum(new_cases_f), na.rm = T) %>%
+  mutate(us_case_m = sum(new_cases_m), na.rm = T) %>%
+  mutate (us_case_ratio = us_case_m / us_case_f ) %>%
+  mutate(us_death_f = sum(new_deaths_f), na.rm = T) %>%
+  mutate(us_death_m = sum(new_deaths_m), na.rm = T) %>%
+  mutate (us_death_ratio = us_death_m / us_death_f )
+
+
+us_covid %>%
+# filter (State %in% c("Mississippi", "Kentucky", "Massachusetts","Wyoming", "Wisconsin", "Alaska", "California")) %>%
+  ggplot() + 
+  geom_line (aes(x = Date, y = us_case_ratio))+
+  scale_x_date ( name = "Date", date_labels = "%b %Y", breaks = as.Date(c(
+                                                                          "2020-05-01",
+                                                                          "2020-06-01",
+                                                                          "2020-07-01",
+                                                                          "2020-08-01",
+                                                                          "2020-09-01",
+                                                                          "2020-10-01",
+                                                                          "2020-11-01")))
+
+
+us_covid %>%
+# filter (State %in% c("Mississippi", "Kentucky", "Massachusetts","Wyoming", "Wisconsin", "Alaska", "California")) %>%
+  ggplot() + 
+  geom_line (aes(x = Date, y = us_death_ratio))+
+  scale_x_date ( name = "Date", date_labels = "%b %Y", breaks = as.Date(c(
+                                                                          "2020-07-01",
+                                                                          "2020-08-01",
+                                                                          "2020-09-01",
+                                                                          "2020-10-01",
+                                                                          "2020-11-01")))
+
+
+
+
+
+```
+
+
+
+```{r}
+
+#Make a plots of COVID sex ratio --already done bring that here
+
+model_case <- lm(new_cases_7avg_sex ~ sex_ratio + X2019.Uninsured + medicaid + Percent.Pov + as.factor(State) , 
+               data = us_covid_june_cutoff)
+
+summary(model_case)
+
+model_death <- lm (new_deaths_7avg_sex ~ sex_ratio + X2019.Uninsured + medicaid + Percent.Pov + as.factor(State) , 
+               data = us_covid_june_cutoff)
+
+summary(model_death)
+
+```
+
