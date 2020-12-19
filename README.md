@@ -1,5 +1,12 @@
 # BST260Project
-Repository for BST 260 final project 
+## Making a Case for Sex-Disaggregated COVID-19 Data
+
+Team Member's Names:
+1. Michelle Ngirbabul
+2. Kaela Connors
+3. Chevy Lazenby
+4. Barune Thapa
 
 
-Hey, y'all! This repository will house our work for the BST 260 final project. 
+
+
