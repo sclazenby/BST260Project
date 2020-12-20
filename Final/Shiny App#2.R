@@ -37,9 +37,9 @@ ui <- fluidPage(
         column(3,
                radioButtons(inputId = "plot_type", label = "What kind of plot?",
                             choices = c("Scatterplot", "Heatmap"))
-        ), # end of fourth column
+        ), 
         
-    ), # end of fluidRow
+    ), 
     
     # plot output and text output
     fluidRow(
@@ -59,14 +59,12 @@ server <- function(input, output) {
     
     output$plot <- renderPlot({
         if (input$plot_type == "Scatterplot") {
-            # make a scatter plot of murder vs urbanpop
             ylabel <- paste(input$category)
-            ggplot(USArrests, aes_string(x = "Date", y = input$category)) +
+            ggplot(covidsex, aes_string(x = "Date", y = input$category)) +
                 geom_point(color = black) +
                 xlab("Date") +
                 ylab(ylabel) 
         } else if (input$plot_type == "Heatmap") {
-            #print(input$crime)
             globalsexd %>% filter(!is.na(deaths_mfratio)) %>%
                 ggplot() + 
                 geom_polygon(data=map, aes(x = long, y=lat, group = group), fill = "light grey") +
