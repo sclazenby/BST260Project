@@ -17,6 +17,9 @@ library(knitr)
 library(plyr)
 library(dplyr)
 library(ggplot2)
+library(RColorBrewer)
+library(scales)
+library(hrbrthemes)
 ```
 
 ## Wrangle Data
@@ -525,10 +528,6 @@ all_countries <- bind_rows(all_countries, Yemen)
 # Date Formatting
 all_countries$Date = parse_date_time(all_countries$Date, orders = "dm")
 
-```
-
-```{r fig.width=7, fig.height=15}
-
 #Add Month Column
 all_countries$Month <- month(all_countries$Date)
 
@@ -539,17 +538,25 @@ month_org = all_countries %>% group_by(Country, Month) %>% summarise_each(funs(m
 SR_country <- month_org %>% mutate(sex_ratio = Male/Female)
 
 
-library(RColorBrewer)
-library(scales)
-# Created tile plot with each box representing a state and year with a gradient filling which represents the square root of the rate
+```
+
+```{r fig.width=7, fig.height=15}
+
+
+
+# Tile heat map with each box representing a country and month with a gradient filling which represents the square root of the sex ratio
+
 tileplot <- SR_country %>% ggplot(aes(Month, Country,  fill = sex_ratio)) +
         geom_tile(color = "grey50") +
-        scale_x_continuous(name="Month", limits=c(2, 11)) +
-        scale_fill_gradientn(colors = brewer.pal(9, "Blues"), trans = "sqrt") +
+        scale_x_continuous(name="Month", limits=c(0, 12), breaks = 1:11,
+          labels = paste0(c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov")),) +
+        scale_fill_gradient(low="firebrick1", high="dodgerblue4",limits=c(0,12), breaks = c(0, 1, 4, 8), trans = "sqrt") +
+        theme_ipsum() +
         theme_minimal() +  theme(panel.grid = element_blank()) +
-        ggtitle("COVID-19 Case Sex Ratio by Country from Jan '20 to Nov '20") + 
-        ylab("Country") + 
-        xlab("Month")
+        ggtitle("COVID-19 Case Sex Ratio Monthly Averages by Country") + 
+        ylab("Country") +
+        labs(fill="Sex Ratio 
+(M:F)")
 
 print(tileplot)
 ```
