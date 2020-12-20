@@ -1,0 +1,128 @@
+﻿country,total,male,female,date,source
+Qatar,12156,91,9,2020/04/28,http://covid.gov.pk/stats/pakistan
+Singapore,6530,88.93,11.07,2020/05/05,https://experience.arcgis.com/experience/7e30edc490a5441a874f9efe67bd8b89
+Bahrain,6081,88.42,11.58,2020/07/06,https://www.moh.gov.bh/Covid19/ContactsTracing
+Botswana,48,83.33,16.67,2020/07/17,https://covid19portal.gov.bw/data-dashboard?v=202005211151
+Cambodia,283,79.86,20.14,2020/10/12,http://www.cdcmoh.gov.kh/images/Document/Coronaviruses/COVID-19/WHO-MOH_SITREP/15.SITREP_COVID-19_WHO-MOH_12.10.pdf
+"South Sudan",2932,75.44,24.56,2020/11/22,https://moh.gov.ss/weekly_updates.php
+"Saudi Arabia",76727,75,25,2020/05/26,https://twitter.com/SaudiMOH/status/1262429066931646464/photo/1
+Somalia,4445,73.99,26.01,2020/11/24,http://moh.gov.so/en/covid19/
+Pakistan,289832,73.98,26.02,2020/08/18,http://covid.gov.pk/stats/pakistan
+"Central African Republic",4854,73.49,26.51,2020/10/07,https://twitter.com/MSPCentrafrique
+Bhutan,386,73.32,26.68,2020/11/24,https://www.facebook.com/MoHBhutan
+Yemen,1897,73.17,26.83,2020/07/21,https://app.powerbi.com/view?r=eyJrIjoiZjE2NzJjZDItNDgyZi00NDFkLWFlMjItNjA2MjIwMWYzODJkIiwidCI6ImY2MTBjMGI3LWJkMjQtNGIzOS04MTBiLTNkYzI4MGFmYjU5MCIsImMiOjh9
+Uganda,4904,72.7,27.3,2020/09/27,https://covid19.gou.go.ug/statistics.html
+Bangladesh,449760,71,29,2020/11/23,https://covid19bd.idare.io/
+Chad,1367,70.96,29.04,2020/11/20,https://www.humanitarianresponse.info/sites/www.humanitarianresponse.info/files/documents/files/sitrep_covid-19_n_242_20_novembre.pdf
+Mongolia,374,70.05,29.95,2020/11/10,https://covid19.mohs.mn/p/cat/post/57/
+Maldives,12738,69.48,30.52,2020/11/24,https://covid19.health.gov.mv/dashboard/
+Afghanistan,43352,68.88,31.12,2020/11/24,http://covid.moph-dw.org/#/
+Malawi,5963,68.29,31.71,2020/11/16,https://malawipublichealth.org/index.php/resources/COVID-19%20SitRep%20Updates/November%202020/20201104_Malawi%20COVID-19%20situation%20report.pdf/detail
+Guinea,12897,68.17,31.83,2020/11/24,http://www.anss-guinee.org/
+Djibouti,3779,68.01,31.99,2020/06/02,https://reliefweb.int/report/djibouti/r-publique-de-djibouti-covid-19-rapport-de-situation-8-17-mai-2020
+Mali,2773,67.4,32.6,2020/08/30,https://www.humanitarianresponse.info/en/op%C3%A9rations/mali/document/sitrep-n%C2%B0117-covid-19
+Rwanda,5665,66.11,33.89,2020/11/22,https://gis.rbc.gov.rw/portal/apps/opsdashboard/index.html#/59872985985446bbaf8c394ad857c5cd
+Nepal,224078,65.83,34.17,2020/11/24,https://covid19.mohp.gov.np/?fbclid=IwAR2_KRxuwxtNk7K92UnPF9Y3IVqh9ZDOzgc3l946lZJiLwtdOlHp6v6BZP8
+"Burkina Faso",2733,65.79,34.21,2020/11/22,https://lefaso.net/spip.php?article100954
+Liberia,1551,64.93,35.07,2020/11/19,https://web.facebook.com/164280647325112/photos/a.347331779019997/1144315182654982/
+India,2877791,64.56,35.44,2020/09/01,https://ncdc.gov.in/dashboard.php
+Kenya,77785,63.8,36.2,2020/11/23,"Ministry report obtained by APHRC from a third party"
+Nigeria,63928,63.34,36.66,2020/11/15,https://ncdc.gov.ng/diseases/sitreps/?cat=14&name=An%20update%20of%20COVID-19%20outbreak%20in%20Nigeria
+Ethiopia,5846,61.2,38.8,2020/06/29,https://tena.et/update
+Kazakhstan,9452,61.03,38.97,2020/06/08,https://hls.kz/
+Malta,674,60.24,39.76,2020/07/22,http://geosys-mt.maps.arcgis.com/apps/opsdashboard/index.html#/c17848aba0f94d79a4f57a7a584c4e8e
+"Equatorial Guinea",4633,59.14,40.86,2020/11/17,https://www.guineasalud.org/archivos/Informes/Informe181120.pdf
+Gambia,3692,58.75,41.25,2020/11/20,http://www.moh.gov.gm/wp-content/uploads/2020/11/Gambia_The_COVID-19_Sitreps-07-and-08th-Nov-20201-1.pdf
+Ghana,50941,58,42,2020/11/24,https://ghanahealthservice.org/covid19/
+Haiti,9248,57.9,42.1,2020/11/22,https://mspp.gouv.ht/site/downloads/Sitrep%20COVID-19_22-11-2020.pdf
+Guatemala,116628,57.38,42.62,2020/11/22,https://tablerocovid.mspas.gob.gt/
+Iran,14991,57,43,2020/03/17,https://twitter.com/drjahanpur/status/1239837848175439874
+Iraq,533555,56.62,43.38,2020/11/24,https://app.powerbi.com/view?r=eyJrIjoiNjljMDhiYmItZTlhMS00MDlhLTg3MjItMDNmM2FhNzE5NmM4IiwidCI6ImY2MTBjMGI3LWJkMjQtNGIzOS04MTBiLTNkYzI4MGFmYjU5MCIsImMiOjh9
+Thailand,3784,56.37,43.63,2020/11/01,https://ddc.moph.go.th/viralpneumonia/eng/file/situation/situation-no301-011163.pdf
+Venezuela,99835,56.1,43.9,2020/11/23,https://covid19.patria.org.ve/estadisticas-venezuela/
+Mozambique,15231,56.02,43.98,2020/11/24,https://www.misau.gov.mz/index.php/covid-19-boletins-diarios#
+Japan,17301,55.07,44.93,2020/06/22,https://mhlw-gis.maps.arcgis.com/apps/opsdashboard/index.html#/0c5d0502bbb54f9a8dddebca003631b8
+Lebanon,117476,55,45,2020/11/23,https://web.facebook.com/wholeb/photos/pcb.4918040028237262/4918039171570681/
+Philippines,422915,54.59,45.41,2020/11/25,https://ncovtracker.doh.gov.ph/
+Panama,79402,54.19,45.81,2020/08/14,http://minsa.b-cdn.net/sites/default/files/publicacion-general
+Cuba,7879,54.11,45.89,2020/11/22,https://covid19cubadata.github.io/#cuba
+Belize,5249,53.82,46.18,2020/11/23,https://www.facebook.com/Belizehealth/
+Algeria,55630,53.8,46.2,2020/11/12,https://corona-dz.live/
+"Sierra Leone",2406,53.57,46.43,2020/11/23,http://dhse.gov.sl/
+Norway,33714,53.29,46.71,2020/11/25,https://www.fhi.no/en/id/infectious-diseases/coronavirus/daily-reports/daily-reports-COVID19/#covid19associated-deaths-by-age-and-sex
+Myanmar,2265,53.25,46.75,2020/09/10,https://datastudio.google.com/u/0/reporting/445c1281-c6ea-45e4-9bc0-5d561c511354/page/I44CB
+Greece,90822,53.14,46.86,2020/11/24,https://eody.gov.gr/wp-content/uploads/2020/11/covid-gr-daily-report-20201124.pdf
+Ecuador,185643,53.01,46.99,2020/11/22,https://public.tableau.com/profile/direcci.n.nacional.de.vigilancia.epidemiol.gica.msp#!/vizhome/COVID19ecu_MSP_DNVE/COVID-19MSP
+Morocco,17015,53,47,2020/07/18,https://2m.ma/fr/news/coronavirus-le-ministere-de-la-sante-fait-le-point-sur-la-situation-epidemiologique-du-royaume-video-20200718/
+Vietnam,1304,52.84,47.16,2020/11/19,https://www.who.int/vietnam/internal-publications-detail
+"Bosnia and Herzegovina",52107,52.18,47.82,2020/11/24,https://covid-19.ba/
+Senegal,14529,52.17,47.83,2020/09/15,http://www.sante.gouv.sn/sites/default/files/COMMUNIQUE198_covid19.pdf
+"El Salvador",37562,52.1,47.9,2020/11/23,https://covid19.gob.sv/
+Israel,328483,52.01,47.99,2020/11/26,https://datadashboard.health.gov.il/COVID-19/?utm_source=go.gov.il&utm_medium=referral
+Guyana,5154,51.94,48.06,2020/11/24,https://www.health.gov.gy/
+Honduras,67789,51.94,48.06,2020/09/14,https://covid19honduras.org/
+Peru,952439,51.91,48.09,2020/11/27,https://www.datosabiertos.gob.pe/group/datos-abiertos-de-covid-19?sort_by=changed&f%5B0%5D=field_tags%3A913&f%5B1%5D=field_tags%3A489
+"Costa Rica",132295,51.48,48.52,2020/11/23,https://www.ministeriodesalud.go.cr/index.php/centro-de-prensa/noticias/741-noticias-2020/1725-situacion-nacional-covid-19
+"North Macedonia",58608,51.36,48.64,2020/11/26,https://gdi-sk.maps.arcgis.com/apps/opsdashboard/index.html?fbclid=IwAR0Dd9MY7njiNtDkPpPt8R2SeD4pW_6TO12axwKrT4CcegckY4P4Ezt43f4#/2096bd4b051b42948ac3f5747e80c3a5
+Cyprus,8685,51.3,48.7,2020/11/22,https://covid19.ucy.ac.cy/
+China,55924,51.1,48.9,2020/02/28,https://www.who.int/docs/default-source/coronaviruse/who-china-joint-mission-on-covid-19-final-report.pdf
+Mexico,1041875,51.04,48.96,2020/11/22,https://coronavirus.gob.mx/datos/
+"Dominican Republic",93732,51.02,48.98,2020/08/28,https://www.msp.gob.do/web/?page_id=6948#1586785071781-f0e8c057-f5f4
+Turkey,362800,51,49,2020/10/25,https://covid19.saglik.gov.tr/Eklenti/39230/0/covid-19-weekly-situation-report---43pdf.pdf?_tag1=D3D202441F1F5165A33D16981E6544EF7FC0A32F
+Chile,595629,50.64,49.36,2020/11/23,https://www.gob.cl/coronavirus/cifrasoficiales/
+Montenegro,30567,50.54,49.46,2020/11/23,https://www.ijzcg.me/
+Indonesia,522581,50.5,49.5,2020/11/26,https://covid19.go.id/peta-sebaran
+Paraguay,76476,50.27,49.73,2020/11/23,https://www.mspbs.gov.py/reporte-covid19.html
+Luxembourg,32874,50,50,2020/11/25,https://msan.gouvernement.lu/en/dossiers/2020/corona-virus.html
+Colombia,1262494,49.93,50.07,2020/11/24,https://www.ins.gov.co/Noticias/Paginas/Coronavirus.aspx
+"Hong Kong",5629,49.9,50.1,2020/11/22,https://www.chp.gov.hk/files/pdf/local_situation_covid19_en.pdf
+Denmark,71654,49.86,50.14,2020/11/23,https://covid19.ssi.dk/
+Taiwan,618,49.84,50.16,2020/11/24,https://data.cdc.gov.tw/en/dataset/agsdctable-day-19cov/resource/a59483fd-4b09-42bd-af15-3c123147d7e3
+Argentina,1395955,49.77,50.23,2020/11/26,https://www.argentina.gob.ar/salud/coronavirus-COVID-19/sala-situacion
+Iceland,1823,49.75,50.25,2020/06/21,https://www.covid.is/data
+Finland,8086,49.49,50.51,2020/08/31,https://thl.fi/fi/web/infektiotaudit-ja-rokotukset/ajankohtaista/ajankohtaista-koronaviruksesta-covid-19/tilannekatsaus-koronaviruksesta
+Austria,278185,49.41,50.59,2020/11/27,https://www.sozialministerium.at/Informationen-zum-Coronavirus/Neuartiges-Coronavirus-(2019-nCov).html
+Germany,975893,49.22,50.78,2020/11/24,https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Situationsberichte/Nov_2020/2020-11-24-en.pdf?__blob=publicationFile
+Italy,1231343,49.06,50.94,2020/11/15,https://www.epicentro.iss.it/coronavirus/bollettino/Bollettino-sorveglianza-integrata-COVID-19_18-novembre-2020.pdf
+"French Polynesia",2228,49.01,50.99,2020/10/04,https://www.service-public.pf/dsp/wp-content/uploads/sites/12/2020/10/BEH12.pdf
+Bulgaria,2443,49,51,2020/05/25,https://coronavirus.bg/bg/news/227
+Australia,27722,48.73,51.27,2020/11/24,https://www.health.gov.au/news/health-alerts/novel-coronavirus-2019-ncov-health-alert/coronavirus-covid-19-current-situation-and-case-numbers
+Croatia,105687,48.52,51.48,2020/11/23,https://koronavirus.hr/podaci/489
+Estonia,10502,48.31,51.69,2020/11/25,https://koroonakaart.ee/en
+Switzerland,313900,48.17,51.83,2020/11/26,https://www.bag.admin.ch/bag/fr/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/situation-schweiz-und-international.html#1164290551
+Albania,33556,48,52,2020/11/23,https://coronavirus.al/statistika/
+Palestine,73197,47.99,52.01,2020/11/24,https://app.powerbi.com/view?r=eyJrIjoiODJlYWM1YTEtNDAxZS00OTFlLThkZjktNDA1ODY2OGQ3NGJkIiwidCI6ImY2MTBjMGI3LWJkMjQtNGIzOS04MTBiLTNkYzI4MGFmYjU5MCIsImMiOjh9
+USA,9212654,47.97,52.03,2020/11/25,https://www.cdc.gov/covid-data-tracker/index.html#demographics
+Canada,325975,47.69,52.31,2020/11/25,https://health-infobase.canada.ca/covid-19/epidemiological-summary-covid-19-cases.html#a7
+"Czech Republic",490186,47.65,52.35,2020/11/25,https://onemocneni-aktualne.mzcr.cz/covid-19
+"Cabo Verde",10526,47.55,52.45,2020/11/25,https://covid19.cv/
+"South Korea",31735,47.52,52.48,2020/11/25,http://ncov.mohw.go.kr/bdBoardList_Real.do?brdId=1&brdGubun=11&ncvContSeq=&contSeq=&board_id=&gubun=
+France,1047083,47.46,52.54,2020/10/22,https://dc-covid.site.ined.fr/en/data/france/
+Eswatini,6219,47.34,52.66,2020/11/22,http://www.gov.sz/images/CORONA/Health-statement-COVID-22-NOVEMBER-2020-FINAL.pdf
+Kyrgyzstan,12498,47.12,52.88,2020/07/16,http://www.med.kg/en/informatsii-2/2095-statistics-on-covid-19-in-kyrgyzstan-as-of-july-6-2020.html
+"Republic of Ireland",71126,47.05,52.95,2020/11/24,https://www.hpsc.ie/a-z/respiratory/coronavirus/novelcoronavirus/casesinireland/epidemiologyofcovid-19inireland/
+Slovakia,92078,46.92,53.08,2020/11/24,https://github.com/Institut-Zdravotnych-Analyz/covid19-data
+Spain,1521835,46.91,53.09,2020/11/18,https://www.isciii.es/QueHacemos/Servicios/VigilanciaSaludPublicaRENAVE/EnfermedadesTransmisibles/_layouts/15/WopiFrame.aspx?sourcedoc=/QueHacemos/Servicios/VigilanciaSaludPublicaRENAVE/EnfermedadesTransmisibles/Documents/INFORMES/Informes%20COVID-19/Informe%20n%C2%BA%2043.Situaci%C3%B3n%20de%20COVID-19%20en%20Espa%C3%B1a%20a%209%20de%20septiembre%20de%202020.pdf&action=default
+"New Zealand",2044,46.77,53.23,2020/11/27,https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-data-and-statistics/covid-19-case-demographics
+Sweden,225560,46.32,53.68,2020/11/24,https://fohm.maps.arcgis.com/apps/opsdashboard/index.html#/68d4537bf2714e63b646c37f152f1392
+"Northern Ireland",50654,46.31,53.69,2020/11/24,https://app.powerbi.com/view?r=eyJrIjoiZGYxNjYzNmUtOTlmZS00ODAxLWE1YTEtMjA0NjZhMzlmN2JmIiwidCI6IjljOWEzMGRlLWQ4ZDctNGFhNC05NjAwLTRiZTc2MjVmZjZjNSIsImMiOjh9
+England,1306700,46.13,53.87,2020/11/22,https://www.gov.uk/government/statistics/national-flu-and-covid-19-surveillance-reports
+Slovenia,74264,46.1,53.9,2020/11/27,https://www.nijz.si/sl/dnevno-spremljanje-okuzb-s-sars-cov-2-covid-19
+Azerbaijan,70216,46,54,2020/11/12,https://koronavirusinfo.az/az/page/statistika/azerbaycanda-cari-veziyyet
+Tunisia,42727,46,54,2020/10/20,http://coronavirus.rns.tn/point-de-situation-en-tunisie/
+Jersey,835,45.99,54.01,2020/11/23,https://www.gov.je/Health/Coronavirus/Pages/CoronavirusCases.aspx
+Brazil,114617,45.75,54.25,2020/05/12,https://portalarquivos.saude.gov.br/images/pdf/2020/April/27/2020-04-27-18-05h-BEE14-Boletim-do-COE.pdf
+Romania,422852,45.63,54.37,2020/11/22,https://www.cnscbt.ro/index.php/analiza-cazuri-confirmate-covid19/2122-raport-saptamanal-episaptamana46/file
+Netherlands,456911,45.6,54.4,2020/11/17,https://www.rivm.nl/sites/default/files/2020-11/COVID-19_WebSite_rapport_wekelijks_20201117_1237.pdf
+Jamaica,10418,45.42,54.58,2020/11/24,https://jamcovid19.moh.gov.jm/
+Portugal,263840,44.97,55.03,2020/11/23,https://covid19.min-saude.pt/ponto-de-situacao-atual-em-portugal/
+Belgium,558644,44.74,55.26,2020/11/23,https://epistat.wiv-isp.be/Covid/covid-19.html
+Scotland,89164,44.51,55.49,2020/11/22,https://beta.isdscotland.org/find-publications-and-data/population-health/covid-19/covid-19-statistical-report/9-september-2020/dashboard/
+Latvia,13236,44.25,55.75,2020/11/23,https://spkc.gov.lv/lv/tavai-veselibai/aktualitate-par-jauno-koronavi
+Wales,75754,43.98,56.02,2020/11/25,https://public.tableau.com/profile/public.health.wales.health.protection#!/vizhome/RapidCOVID-19virology-Public/Headlinesummary
+Lithuania,49241,43.05,56.95,2020/11/24,https://registrucentras.maps.arcgis.com/apps/opsdashboard/index.html#/becd01f2fade4149ba7a9e5baaddcd8d
+"South Africa",768834,41.84,58.16,2020/11/24,https://www.nicd.ac.za/diseases-a-z-index/covid-19/surveillance-reports/
+Moldova,98418,41.17,58.83,2020/11/22,http://gismoldova.maps.arcgis.com/apps/opsdashboard/index.html#/d274da857ed345efa66e1fbc959b021b
+Ukraine,635688,40.08,59.92,2020/11/23,https://phc.org.ua/kontrol-zakhvoryuvan/inshi-infekciyni-zakhvoryuvannya/koronavirusna-infekciya-covid-19
+Gabon,8409,40,60,2020/08/26,https://reliefweb.int/report/gabon/unicef-gabon-covid-19-situation-report-no-8-22-july-26-august-2020
+Guernsey,252,36.9,63.1,2020/05/11,https://covid19.gov.gg/sites/default/files/2020-09/COVID-19%20Analysis%20of%20Cases%20-%20September%202020.pdf
