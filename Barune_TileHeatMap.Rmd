@@ -527,21 +527,35 @@ all_countries$Date = parse_date_time(all_countries$Date, orders = "dm")
 
 ```
 
-```{r}
+```{r fig.width=8, fig.height=15}
 
+#Add Month Column
+all_countries$Month <- month(all_countries$Date)
 
+#Summarize all country data by month (not enough data across countries to do day by day tile plot)
+month_org = all_countries %>% group_by(Country, Month) %>% summarise_each(funs(mean))
+
+head(month_org)
+head(all_countries)
 
 
 library(RColorBrewer)
+library(scales)
 # Created tile plot with each box representing a state and year with a gradient filling which represents the square root of the rate
-tileplot <- all_countries %>% ggplot(aes(Date, Country,  fill = Male)) +
+tileplot <- month_org %>% ggplot(aes(Month, Country,  fill = Male)) +
         geom_tile(color = "grey50") +
         scale_x_continuous(expand = c(0,0)) +
-        scale_fill_gradientn(colors = brewer.pal(9, "Greens"), trans = "sqrt") +
+        scale_fill_gradientn(colors = brewer.pal(9, "Blues")) +
         theme_minimal() +  theme(panel.grid = element_blank()) +
-        ggtitle("Square Root of Yearly Measles Rates by State") + 
-        ylab("State") + 
-        xlab("Year")
+        ggtitle("COVID-19 Case Sex Ratio by Country from Jan 2020 to Nov 2020") + 
+        ylab("Country") + 
+        xlab("Month")
 
 print(tileplot)
 ```
+all_countries$Month <- parse_date_time(all_countries$Month, orders = "m")
+
+  format(as.Date(all_countries$Date), "%m")
+  
+  #Reformat "Month" Column
+month_org$Month <- parse_date_time(month_org$Month, orders = "m")
