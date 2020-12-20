@@ -527,7 +527,7 @@ all_countries$Date = parse_date_time(all_countries$Date, orders = "dm")
 
 ```
 
-```{r fig.width=8, fig.height=15}
+```{r fig.width=7, fig.height=15}
 
 #Add Month Column
 all_countries$Month <- month(all_countries$Date)
@@ -535,19 +535,19 @@ all_countries$Month <- month(all_countries$Date)
 #Summarize all country data by month (not enough data across countries to do day by day tile plot)
 month_org = all_countries %>% group_by(Country, Month) %>% summarise_each(funs(mean))
 
-head(month_org)
-head(all_countries)
+# Add Sex Ratio Column (M:F)
+SR_country <- month_org %>% mutate(sex_ratio = Male/Female)
 
 
 library(RColorBrewer)
 library(scales)
 # Created tile plot with each box representing a state and year with a gradient filling which represents the square root of the rate
-tileplot <- month_org %>% ggplot(aes(Month, Country,  fill = Male)) +
+tileplot <- SR_country %>% ggplot(aes(Month, Country,  fill = sex_ratio)) +
         geom_tile(color = "grey50") +
-        scale_x_continuous(expand = c(0,0)) +
-        scale_fill_gradientn(colors = brewer.pal(9, "Blues")) +
+        scale_x_continuous(name="Month", limits=c(2, 11)) +
+        scale_fill_gradientn(colors = brewer.pal(9, "Blues"), trans = "sqrt") +
         theme_minimal() +  theme(panel.grid = element_blank()) +
-        ggtitle("COVID-19 Case Sex Ratio by Country from Jan 2020 to Nov 2020") + 
+        ggtitle("COVID-19 Case Sex Ratio by Country from Jan '20 to Nov '20") + 
         ylab("Country") + 
         xlab("Month")
 
