@@ -521,8 +521,27 @@ Yemen <- data.frame(append(Yemen, c(Country='Yemen'), after=0))
 all_countries <- bind_rows(all_countries, Yemen)
 
 
-view(all_countries)
-    
+
+# Date Formatting
+all_countries$Date = parse_date_time(all_countries$Date, orders = "dm")
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+
+
+
+
+library(RColorBrewer)
+# Created tile plot with each box representing a state and year with a gradient filling which represents the square root of the rate
+tileplot <- all_countries %>% ggplot(aes(Date, Country,  fill = Male)) +
+        geom_tile(color = "grey50") +
+        scale_x_continuous(expand = c(0,0)) +
+        scale_fill_gradientn(colors = brewer.pal(9, "Greens"), trans = "sqrt") +
+        theme_minimal() +  theme(panel.grid = element_blank()) +
+        ggtitle("Square Root of Yearly Measles Rates by State") + 
+        ylab("State") + 
+        xlab("Year")
+
+print(tileplot)
+```
