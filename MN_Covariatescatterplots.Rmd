@@ -8,14 +8,8 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-* This RMarkdown file is the official document for Group 4's final project. 
 
-* US and global sex-disaggregated data
-* US data includes state-level demographics (e.g., SES)
-
-Upload and clean the Census data on median income per state. 
-
-```{r}
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
 library(tidyverse)
 library(rvest)
 library(purrr)
@@ -36,18 +30,14 @@ medinc <- medinc %>%
 medinc <- medinc[-c(1), ]
 ```
 
-## Percent living in poverty
-*Upload and clean Census data on percent without healtcare per State. 
-*2017-2018 averages
 
-```{r}
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
 #Upload
+## Percent living in poverty
 pov <- read.csv("Census_percentage ppl in poverty by state using 2-3 year averages.csv")
 
-#Identify column names. 
-colnames(pov)
 
-#Select
+#Select and rename columns
 pov <- pov %>%
   select("Table.with.row.headings.in.column.A.and.column.headings.in.rows.5.to.10.", "X.4") %>%
   rename("State" = "Table.with.row.headings.in.column.A.and.column.headings.in.rows.5.to.10.") %>%
@@ -56,11 +46,7 @@ pov <- pov %>%
 #Drop unnecessary rows.
 pov <- pov[-c(1:8, 10, 21, 32, 43, 54, 66:73), ] 
 
-#Rename states.
-str(medinc$State)
-str(pov$State)
-
-#Recode countries
+#Rename States
 medinc$State <- as.character(medinc$State)
 pov$State <- as.character(pov$State)
 
@@ -118,15 +104,13 @@ pov$State[grepl("Wyoming..................", pov$State)] <-"Wyoming"
 pov$State[grepl("     United States…….", pov$State)] <-"United States"
 
 ```
-# Percent without health insurance
-*2018 and 2019 years included. 
-```{r}
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+# Percent without health insurance. 2018 and 2019 years included. 
 #Upload
 insur <- read.csv("Census_percent_no health_insur.csv")
 
-#Create dataframe. Select and rename columns
-colnames(insur)
-
+#Rename colnames
 insur <- insur %>%
   select("Table.with.row.headers.in.column.A.and.column.headers.in.rows.6.through.10", "X", "X.3", "X.5", "X.7") %>%
   rename("State" = "Table.with.row.headers.in.column.A.and.column.headers.in.rows.6.through.10") %>%
@@ -139,9 +123,7 @@ insur <- insur %>%
 insur <- insur[-c(1:10, 12, 23, 34, 45, 56, 68:79), ]
 
 #Rename states.
-str(insur$State)
 insur$State <- as.character(insur$State)
-
 
 insur$State[grepl("Alabama……………………………….", insur$State)] <- "Alabama"
 insur$State[grepl("Alaska……………………………………..", insur$State)] <- "Alaska"
@@ -198,16 +180,11 @@ insur$State[grepl("United States…………..", insur$State)] <-"United States"
 
 
 ```
-# Average population
-* State population for 2018 and 2019. 
 
-```{r}
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+# Average population. State population for 2018 and 2019. 
 #Upload
 pop <- read.csv("Census_Annual estimate of res population for US, regions, states, and P 4.2010 to 07.2019_nst-est2019-01.csv")
-
-
-#Create dataframe
-colnames(pop)
 
 pop <- pop %>%
   select("table.with.row.headers.in.column.A.and.column.headers.in.rows.3.through.4...leading.dots.indicate.sub.parts.", "X.10", "X.11") %>%
@@ -220,7 +197,6 @@ pop <- pop[-c(1:3, 5:8, 60:66), ]
 
 
 #Rename states.
-str(insur$State)
 pop$State <- as.character(pop$State)
 
 
@@ -276,11 +252,11 @@ pop$State[grepl(".West Virginia", pop$State)] <-"West Virginia"
 pop$State[grepl(".Wisconsin", pop$State)] <-"Wisconsin"
 pop$State[grepl(".Wyoming", pop$State)] <-"Wyoming"
 
-
 ```
-# Need to merge the datasets with all the SES varibles. We still need to fix the cases for the US data, the format is weird so I suggest re-dowloading but not sure who uploaded it.
 
-```{r}
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+# Need to merge the datasets with all the SES varibles. 
 ses <- left_join(pop, insur, by = "State")
 
 ses2 <- left_join(ses, medinc, by ="State")
@@ -327,13 +303,14 @@ covidsex <- covidsex %>%
   mutate(death_ratio = Male_d/Female_d)
 
 # Rename "US Virgin Islands" to "US Virgin Island"
-str(covidsex$State)
 covidsex$State[grepl("US Virgin Islands", covidsex$State)] <- "US Virgin Island"
 
 ```
-Global Data
 
-```{r}
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+#Global Data
+
 library(readr)
 
 global5050 <- read_csv("global5050.csv") %>% select (Country, case_date= "Cases date", male_cases = "Cases (% male)",
@@ -341,9 +318,11 @@ global5050 <- read_csv("global5050.csv") %>% select (Country, case_date= "Cases 
                                                     deaths_mfratio = "Proportion of deaths in confirmed cases (Male:female ratio)")
                                                     
 ```
-Scatterplots of confirmed cases against covariates. 
 
-```{r}
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+#Scatterplots of confirmed cases against covariates. 
+
 covidsex$`Percent Pov`<-as.numeric(covidsex$`Percent Pov`)
 covidsex$`Median Income` <-as.numeric(covidsex$`Median Income`)
 covidsex$`2019 Uninsured` <-as.numeric(covidsex$`2019 Uninsured`)
@@ -392,10 +371,9 @@ library(gridExtra)
 grid.arrange(A1, A2, A3, nrow = 3, ncol = 1, top = "Ratio of Female to Male COVID cases against covariates per State")
 ```
 
-Scatterplots of death ratio against covariates. 
-
-```{r}
-# Percent in Poverty
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+#Scatterplots of death ratio against covariates. 
+#Percent in Poverty
 D1 <- covidsex %>% filter(!is.na(death_ratio), (!is.na(`Percent Pov`))) %>%
   group_by(State) %>%
   ggplot(aes(x=`Percent Pov`, y=death_ratio)) +
