@@ -332,7 +332,8 @@ A1 <- covidsex %>% filter(!is.na(case_ratio), (!is.na(`Percent Pov`))) %>%
   group_by(State) %>%
   ggplot(aes(x=`Percent Pov`, y=case_ratio)) +
   geom_point()+
-  scale_y_continuous(limits = c(0.5, 3.0)) +
+  geom_smooth() +
+  scale_y_continuous(limits = c(0.5, 2.5)) +
   scale_x_continuous(limits=c(0, 50, 10)) +
   theme_bw() +
   xlab("Percent living in poverty") +
@@ -345,7 +346,8 @@ A2 <- covidsex %>% filter(!is.na(case_ratio), (!is.na(`Median Income`))) %>%
   group_by(State) %>%
   ggplot(aes(x=`Median Income`, y=case_ratio)) +
   geom_point()+
-  scale_y_continuous(limits = c(0.5, 3.0)) +
+  geom_smooth(method=lm) +
+  scale_y_continuous(limits = c(0.5, 2.5)) +
   scale_x_continuous(limits=c(0, 60, 10)) +
   theme_bw() +
   xlab("Median Income") +
@@ -358,7 +360,8 @@ A3 <- covidsex %>% filter(!is.na(case_ratio), (!is.na(`2019 Uninsured`))) %>%
   group_by(State) %>%
   ggplot(aes(x=`2019 Uninsured`, y=case_ratio)) +
   geom_point()+
-  scale_y_continuous(limits = c(0.5, 3.0)) +
+  geom_smooth() +
+  scale_y_continuous(limits = c(0.5, 2.5)) +
   scale_x_continuous(limits=c(0, 50, 10)) +
   theme_bw() +
   xlab("Percent without Health Insurance") +
@@ -378,6 +381,7 @@ D1 <- covidsex %>% filter(!is.na(death_ratio), (!is.na(`Percent Pov`))) %>%
   group_by(State) %>%
   ggplot(aes(x=`Percent Pov`, y=death_ratio)) +
   geom_point()+
+  geom_smooth() +
   scale_y_continuous(limits = c(0.5, 3.0)) +
   scale_x_continuous(limits=c(0, 50, 10)) +
   theme_bw() +
@@ -386,12 +390,12 @@ D1 <- covidsex %>% filter(!is.na(death_ratio), (!is.na(`Percent Pov`))) %>%
   #ggtitle("Ratio of Female to Male COVID deaths against Pecent in Poverty Per State") +
   #theme(plot.title = element_text(size=12, hjust = 0.5, vjust = 2))
 
-
 # Median Income
 D2 <- covidsex %>% filter(!is.na(death_ratio)) %>%
   group_by(State) %>%
   ggplot(aes(x=`Median Income`, y=death_ratio)) +
   geom_point()+
+  geom_smooth() +
   scale_y_continuous(limits = c(0.5, 3.0)) +
   scale_x_continuous(limits=c(0, 60, 10)) +
   theme_bw() +
@@ -405,6 +409,7 @@ D3 <- covidsex %>% filter(!is.na(death_ratio), (!is.na(`2019 Uninsured`))) %>%
   group_by(State) %>%
   ggplot(aes(x=`2019 Uninsured`, y=death_ratio)) +
   geom_point()+
+  geom_smooth() +
   scale_y_continuous(limits = c(0.5, 3.0)) +
   scale_x_continuous(limits=c(0, 50, 10)) +
   theme_bw() +
