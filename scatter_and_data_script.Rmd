@@ -1,0 +1,17 @@
+---
+title: ""
+output: html_document
+---
+
+## What Data?
+
+In our assessment of sex-disaggregated COVID-19 cases and deaths, we compiled data from a variety of sources including sociodemographic data, COVID-19 case and death data, insurance coverage, and sex ratios per state. For our analysis at the global level, we obtained sex-disaggregated COVID-19 summary information for any countries reporting it within the same time period. 
+ 
+For the United States, we used weekly and cumulative data collected by the Gendersci Lab. The GenderSci Lab reports manually extracts COVID-19 related case and mortality data each week from other publicly available state public health departments. They have data available from mid-April 2020 until present, however, for this analysis the latest data is for Nov. 30, 2020. GenderSci’s data had cumulative cases, new weekly cases as well as frequency and percent of cases disaggregated by sex for confirmed cases and deaths. We collected our sociodemographic data on population, percent living in poverty, percent without health insurance, and median income per state from the U.S. [Census Bureau’s online database](https://www.census.gov/quickfacts/fact/table/US/PST045219).  
+ 
+ 
+To merge and form a dataset for the United States, we had to do substantial data cleaning on data from the U.S. Census. Each dataset from the U.S. Census required cleaning to get it into the right format. We had to rename column names and rename each state so that we could join them with the other datasets. We dropped columns with data that did not have either 2018 or 2019 data for the measure we wanted or had additional information on sources, year-to-year differences, etc. We cleaned the data from GenderSci using lubridate to change the date format, remove unnecessary columns and NA rows. We also removed white spaces in state names using `str_trim`. We then merged GenderSci and U.S. Census Bureau data and created two new variables, `case_ratio` and `death_ratio` using the `mutate` function.
+ 
+ 
+For our global perspective, we used data from the [Global 5050](https://globalhealth5050.org/the-sex-gender-and-covid-19-project/) which looks at sex-disaggregated COVID-19 data by country. The Global 5050 data was very clean from the start so we just selected columns with country names, case dates, male cases, female cases, and female to male death ratio. 
+ 
