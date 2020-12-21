@@ -1,6 +1,6 @@
 ---
-title: "Exploratory Global Visualizations"
-date: December 7, 2020
+title: "Global Trends: COVID-19 and Gender"
+date: December 21, 2020
 output: html_document
 code_folding: hide
 ---
