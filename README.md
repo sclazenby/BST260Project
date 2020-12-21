@@ -15,5 +15,6 @@ The four RMD files to review are called:
 
 
 Here is the link to our webpage:https://sclazenby.github.io/COVID-19-Sex-Data
+
 Here is the link to our screencast: 
 
