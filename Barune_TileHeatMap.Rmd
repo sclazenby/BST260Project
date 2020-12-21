@@ -544,7 +544,7 @@ SR_country <- month_org %>% mutate(sex_ratio = Male/Female)
 
 This tile plot gives us a view of the global gender disparity over time in COVID-19 cases across all countries for which sex dissagregated data was available. Lighter colors indicate where the sex ratio is skewed towards higher female COVID-19 cases and darker colors indicate a skew toward higher male COVID-19 cases. Filled-in tiles show where sex dissagregated COVID-19 case data was available for the month, and blank spaces indicate where it was not reported.
 
-```{r fig.width=9, fig.height=17}
+```{r fig.width=9, fig.height=17, echo=FALSE}
 # Tile heat map with each box representing a country and month with a gradient filling which represents the square root of the sex ratio
 
 tileplot <- SR_country %>% ggplot(aes(Month, Country,  fill = sex_ratio)) +
