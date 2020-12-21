@@ -542,15 +542,13 @@ SR_country <- month_org %>% mutate(sex_ratio = Male/Female)
 
 ```{r fig.width=7, fig.height=15}
 
-
-
 # Tile heat map with each box representing a country and month with a gradient filling which represents the square root of the sex ratio
 
 tileplot <- SR_country %>% ggplot(aes(Month, Country,  fill = sex_ratio)) +
         geom_tile(color = "grey50") +
         scale_x_continuous(name="Month", limits=c(0, 12), breaks = 1:11,
           labels = paste0(c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov")),) +
-        scale_fill_gradient(low="firebrick1", high="dodgerblue4",limits=c(0,12), breaks = c(0, 1, 4, 8), trans = "sqrt") +
+        scale_fill_gradient(low="white", high="dodgerblue4",limits=c(0,12), breaks = c(0, 1, 4, 8), trans = "sqrt") +
         theme_ipsum() +
         theme_minimal() +  theme(panel.grid = element_blank()) +
         ggtitle("COVID-19 Case Sex Ratio Monthly Averages by Country") + 
