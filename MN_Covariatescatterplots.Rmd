@@ -18,11 +18,12 @@ Upload and clean the Census data on median income per state.
 ```{r}
 library(tidyverse)
 library(rvest)
+library(purrr)
 library(dplyr)
 library(ggplot2)
-install.packages("purrr")
 library(maps)
-library(RColorBrewer)
+library(tidyr)
+
 
 # Upload the Census data on median income and filter to only include State names and their median income in 2018.Rename.
 medinc <- read.csv("median_income.csv")
@@ -33,7 +34,6 @@ medinc <- medinc %>%
 
 # Remove the first row. 
 medinc <- medinc[-c(1), ]
-head(medinc)
 ```
 
 ## Percent living in poverty
@@ -55,7 +55,6 @@ pov <- pov %>%
 
 #Drop unnecessary rows.
 pov <- pov[-c(1:8, 10, 21, 32, 43, 54, 66:73), ] 
-head(pov)
 
 #Rename states.
 str(medinc$State)
@@ -277,7 +276,7 @@ pop$State[grepl(".West Virginia", pop$State)] <-"West Virginia"
 pop$State[grepl(".Wisconsin", pop$State)] <-"Wisconsin"
 pop$State[grepl(".Wyoming", pop$State)] <-"Wyoming"
 
-pop$State
+
 ```
 # Need to merge the datasets with all the SES varibles. We still need to fix the cases for the US data, the format is weird so I suggest re-dowloading but not sure who uploaded it.
 
@@ -293,7 +292,6 @@ ses3 <- left_join (ses2, pov, by = "State")
 #trim whitespace in state names
 ses3$State = str_trim(ses3$State, side=c("both", "left", "right"))
 
-head(ses3)
 
 ###Create cases and deaths sex-disaggregated dataframe
 library(readxl)
@@ -331,8 +329,6 @@ covidsex <- covidsex %>%
 # Rename "US Virgin Islands" to "US Virgin Island"
 str(covidsex$State)
 covidsex$State[grepl("US Virgin Islands", covidsex$State)] <- "US Virgin Island"
-view(covidsex)
-
 
 ```
 Global Data
@@ -344,8 +340,6 @@ global5050 <- read_csv("global5050.csv") %>% select (Country, case_date= "Cases 
                                                     female_cases = "Cases (% female)", 
                                                     deaths_mfratio = "Proportion of deaths in confirmed cases (Male:female ratio)")
                                                     
-View(global5050)
-
 ```
 Scatterplots of confirmed cases against covariates. 
 
@@ -359,8 +353,8 @@ A1 <- covidsex %>% filter(!is.na(case_ratio), (!is.na(`Percent Pov`))) %>%
   group_by(State) %>%
   ggplot(aes(x=`Percent Pov`, y=case_ratio)) +
   geom_point()+
-  scale_y_continuous(limits = c(0.5, 2.0)) +
-  scale_x_continuous(limits=c(0, 60, 10)) +
+  scale_y_continuous(limits = c(0.5, 3.0)) +
+  scale_x_continuous(limits=c(0, 50, 10)) +
   theme_bw() +
   xlab("Percent living in poverty") +
   ylab("Ratio F:M") 
@@ -372,7 +366,7 @@ A2 <- covidsex %>% filter(!is.na(case_ratio), (!is.na(`Median Income`))) %>%
   group_by(State) %>%
   ggplot(aes(x=`Median Income`, y=case_ratio)) +
   geom_point()+
-  scale_y_continuous(limits = c(0.5, 2.0)) +
+  scale_y_continuous(limits = c(0.5, 3.0)) +
   scale_x_continuous(limits=c(0, 60, 10)) +
   theme_bw() +
   xlab("Median Income") +
@@ -385,10 +379,10 @@ A3 <- covidsex %>% filter(!is.na(case_ratio), (!is.na(`2019 Uninsured`))) %>%
   group_by(State) %>%
   ggplot(aes(x=`2019 Uninsured`, y=case_ratio)) +
   geom_point()+
-  scale_y_continuous(limits = c(0.5, 2.0)) +
-  scale_x_continuous(limits=c(0, 60, 10)) +
+  scale_y_continuous(limits = c(0.5, 3.0)) +
+  scale_x_continuous(limits=c(0, 50, 10)) +
   theme_bw() +
-  xlab("% Uninsured") +
+  xlab("Percent without Health Insurance") +
   ylab("Ratio F:M") 
   #ggtitle("Ratio of Female to Male COVID cases against Percent without Health Insurance in the US") +
   #theme(plot.title = element_text(size=12, hjust = 0.5, vjust = 2))
@@ -406,10 +400,10 @@ D1 <- covidsex %>% filter(!is.na(death_ratio), (!is.na(`Percent Pov`))) %>%
   group_by(State) %>%
   ggplot(aes(x=`Percent Pov`, y=death_ratio)) +
   geom_point()+
-  scale_y_continuous(limits = c(0.5, 2.0)) +
-  scale_x_continuous(limits=c(0, 60, 10)) +
+  scale_y_continuous(limits = c(0.5, 3.0)) +
+  scale_x_continuous(limits=c(0, 50, 10)) +
   theme_bw() +
-  xlab("Percent living in poverty") 
+  xlab("Percent living in poverty") +
   ylab("Ratio F:M") 
   #ggtitle("Ratio of Female to Male COVID deaths against Pecent in Poverty Per State") +
   #theme(plot.title = element_text(size=12, hjust = 0.5, vjust = 2))
@@ -420,7 +414,7 @@ D2 <- covidsex %>% filter(!is.na(death_ratio)) %>%
   group_by(State) %>%
   ggplot(aes(x=`Median Income`, y=death_ratio)) +
   geom_point()+
-  scale_y_continuous(limits = c(0.5, 2.0)) +
+  scale_y_continuous(limits = c(0.5, 3.0)) +
   scale_x_continuous(limits=c(0, 60, 10)) +
   theme_bw() +
   xlab("Median Income") +
@@ -433,10 +427,10 @@ D3 <- covidsex %>% filter(!is.na(death_ratio), (!is.na(`2019 Uninsured`))) %>%
   group_by(State) %>%
   ggplot(aes(x=`2019 Uninsured`, y=death_ratio)) +
   geom_point()+
-  scale_y_continuous(limits = c(0.5, 2.0)) +
-  scale_x_continuous(limits=c(0, 60, 10)) +
+  scale_y_continuous(limits = c(0.5, 3.0)) +
+  scale_x_continuous(limits=c(0, 50, 10)) +
   theme_bw() +
-  xlab("% Uninsured") +
+  xlab("Percent without Health Insurance") +
   ylab("Ratio F:M") 
   #ggtitle("Ratio of Female to Male COVID deaths against Percent without Health Insurance in the US") +
   #theme(plot.title = element_text(size=12, hjust = 0.5, vjust = 2))
