@@ -1,7 +1,3 @@
----
-title: "Tile Plot"
-output: html_document
----
 
 ```{r setup, include=FALSE, message=FALSE, warning=FALSE, echo=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -541,7 +537,7 @@ SR_country <- month_org %>% mutate(sex_ratio = Male/Female)
 
 ```
 
-## Tile Plot of Square Root Transformed COVID-19 Case Sex Ratio Monthly Averages by Country
+### Global Case Data Over Time
 
 This tile plot gives us a view of the global gender disparity over time in COVID-19 cases across all countries for which sex dissagregated data was available. Lighter colors indicate where the sex ratio is skewed towards higher female COVID-19 cases and darker colors indicate a skew toward higher male COVID-19 cases. Filled-in tiles show where sex dissagregated COVID-19 case data was available for the month, and blank spaces indicate where it was not reported.
 
